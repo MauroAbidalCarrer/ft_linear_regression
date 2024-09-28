@@ -1,9 +1,11 @@
+import argparse
+import json
+
 import pandas as pd
 from pandas import DataFrame as DF
 import numpy as np
 import matplotlib.pyplot as plt
-import argparse
-import json
+from rich import print
 
 def main():
     cli_kwargs = parse_arguments()
