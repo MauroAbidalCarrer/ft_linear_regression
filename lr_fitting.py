@@ -6,6 +6,7 @@ from pandas import DataFrame as DF
 import numpy as np
 import matplotlib.pyplot as plt
 from rich import print
+from rich.progress import track
 
 def main():
     cli_kwargs = parse_arguments()
@@ -30,7 +31,7 @@ def fit_lr(dataset:DF, plt_fitting=False, plt_final_fitting=False, learning_rate
         plt_dataset_and_lr(std_scaled_dataset, theta_0, theta_1)
 
 
-    for _ in range(nb_epochs):
+    for epoch_idx in track(range(nb_epochs)):
         std_scaled_dataset:DF = (
             std_scaled_dataset
             .eval(f"estimated_price = {theta_0} + {theta_1} * km")
