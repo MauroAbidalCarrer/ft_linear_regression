@@ -9,13 +9,18 @@ from rich import print
 from rich.progress import track
 
 def main():
-    cli_kwargs = parse_arguments()
-    dataset = pd.read_csv(cli_kwargs["path_to_dataset"]).dropna(how="any")
-    theta_0, theta_1 = fit_lr(dataset, **cli_kwargs)
-    with open("lr_params.json", "w") as param_file:
-        param_file.write(json.dumps({"theta_0": theta_0, "theta_1": theta_1}, indent=1))
-    if cli_kwargs["print_scores"]:
-        print_scores(dataset, theta_0, theta_1)
+    try:
+        cli_kwargs = parse_arguments()
+        dataset = pd.read_csv(cli_kwargs["path_to_dataset"]).dropna(how="any")
+        theta_0, theta_1 = fit_lr(dataset, **cli_kwargs)
+        with open("lr_params.json", "w") as param_file:
+            param_file.write(json.dumps({"theta_0": theta_0, "theta_1": theta_1}, indent=1))
+        if cli_kwargs["print_scores"]:
+            print_scores(dataset, theta_0, theta_1)
+    except Exception as e:
+        print("[red]Encountered Exception:")
+        print(f"[red]{e}")
+
 
 def fit_lr(dataset:DF, plt_fitting=False, plt_final_fitting=False, learning_rate=0.1, nb_epochs=20, **kwargs) -> tuple[float, float]:
     # apply std standardization on dataset
